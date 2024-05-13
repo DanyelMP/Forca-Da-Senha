@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Força da senha</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: consolas;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333;
+        }
+        .box {
+            position: relative;
+            width: 300px;
+            height: 50px;
+        }
+        .box h2 {
+            position: absolute;
+            top: -40px;
+            font-size: 1.25em;
+            color: #fff;
+            font-size: 500;
+        }
+        .box input {
+            position: absolute;
+            inset: 2px;
+            z-index: 10;
+            font-size: 1em;
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            background: #333;
+            color: #fff;
+        }
+        .box .forca-da-senha {
+            position: absolute;
+            inset: 0;
+            background: #1115;
+        }
+        .box .forca-da-senha:nth-child(3) {
+            filter: blur(5px);
+        }
+        .box .forca-da-senha:nth-child(4) {
+            filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Força Da Senha <span id="text">Check</span></h2>
+        <input type="password" id="password" placeholder="Digite sua senha">
+        <div class="forca-da-senha"></div>
+        <div class="forca-da-senha"></div>
+        <div class="forca-da-senha"></div>
+    </div>
+    <script>
+        let passwordInput = document.getElementById('password');
+        let passwordStrengths = document.querySelectorAll('.forca-da-senha');
+        let text = document.getElementById('text')
+
+        passwordInput.addEventListener('input', function (event){
+            let password = event.target.value;
+            let strength = Math.min(password.length, 12);
+            let degree = strength * 30; //calculate degree value based on password strength
+            let gradientColor = strength <= 4 ? '#ff2c1c' : (strength <= 8 ? '#ff9800' : '#12ff12');
+            let strengthText = strength <= 4 ? 'Fraca' : (strength <= 8 ? 'Média' : 'Boa senha!');
+            passwordStrengths.forEach(passwordStrength => {
+                passwordStrength.style.background = `conic-gradient(${gradientColor} ${degree}deg, #1115 ${degree}deg)`;
+            });
+            text.textContent = strengthText;
+            text.style.color = gradientColor;
+        });
+    </script>
+</body>
+</html>
